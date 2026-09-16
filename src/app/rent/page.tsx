@@ -1,0 +1,100 @@
+import { db } from "@/db";
+import { properties, propertyImages } from "@/db/schema";
+import { and, eq, inArray, desc } from "drizzle-orm";
+import Link from "next/link";
+import Image from "next/image";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Rent Property in India",
+  description: "Browse verified rental properties across India managed by Lala NRI Realty.",
+};
+
+export default async function RentPage() {
+  const rows = await db
+    .select({
+      id: properties.id,
+      title: properties.title,
+      category: properties.category,
+      city: properties.city,
+      state: properties.state,
+      area: properties.area,
+      areaUnit: properties.areaUnit,
+      bedrooms: properties.bedrooms,
+      features: properties.features,
+      description: properties.description,
+      occupancy: properties.occupancy,
+      isFeatured: properties.isFeatured,
+    })
+    .from(properties)
+    .where(and(eq(properties.purpose, "rent"), eq(properties.status, "published")))
+    .orderBy(desc(properties.isFeatured), desc(properties.createdAt));
+
+  const ids = rows.map((r) => r.id);
+  const images = ids.length > 0
+    ? await db.select({ propertyId: propertyImages.propertyId, url: propertyImages.url })
+        .from(propertyImages).where(inArray(propertyImages.propertyId, ids)).orderBy(propertyImages.sortOrder)
+    : [];
+  const imageMap = new Map<string, string>();
+  for (const img of images) { if (!imageMap.has(img.propertyId)) imageMap.set(img.propertyId, img.url); }
+
+  return (
+    <main className="min-h-screen bg-[#0F172A] text-white">
+      <nav className="fixed top-0 inset-x-0 z-50 bg-[#0F172A]/80 backdrop-blur-md border-b border-white/5">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <Link href="/" className="text-[#C5A059] font-bold text-xl">Lala NRI Realty</Link>
+          <div className="flex items-center gap-6 text-sm text-slate-300">
+            <Link href="/buy" className="hover:text-[#C5A059]">Buy</Link>
+            <Link href="/rent" className="text-[#C5A059] font-semibold">Rent</Link>
+            <Link href="/sell" className="hover:text-[#C5A059]">Sell</Link>
+            <Link href="/manage" className="hover:text-[#C5A059]">Manage</Link>
+          </div>
+          <Link href="/login" className="text-sm bg-[#C5A059] text-[#0F172A] px-4 py-2 rounded-lg font-semibold">Login</Link>
+        </div>
+      </nav>
+      <div className="pt-28 pb-20 px-6 max-w-7xl mx-auto">
+        <div className="mb-10">
+          <p className="text-[#C5A059] text-sm font-semibold uppercase tracking-widest mb-2">Rental Properties</p>
+          <h1 className="text-4xl font-bold">Rent Property in India</h1>
+          <p className="text-slate-400 mt-2 max-w-xl">Verified commercial and residential rental opportunities managed end-to-end by our team.</p>
+        </div>
+        {rows.length === 0 ? (
+          <div className="text-center py-20 text-slate-500">
+            <p className="text-2xl mb-2">No rental listings available yet.</p>
+            <p className="text-sm">Check back soon or <Link href="/contact" className="text-[#C5A059] underline">contact us</Link>.</p>
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {rows.map((prop) => {
+              const cover = imageMap.get(prop.id);
+              const features = Array.isArray(prop.features) ? prop.features : [];
+              return (
+                <Link key={prop.id} href={`/rent/${prop.id}`} className="group bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-[#C5A059]/40 transition-all duration-300 hover:-translate-y-1">
+                  <div className="relative h-52 bg-slate-800">
+                    {cover ? <Image src={cover} alt={prop.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="33vw" /> : <div className="w-full h-full flex items-center justify-center text-slate-600 text-4xl">🔑</div>}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute bottom-3 left-3 flex gap-2">
+                      <span className="text-xs bg-[#C5A059]/90 text-[#0F172A] font-semibold px-2 py-1 rounded-full">{prop.category.replace(/_/g, " ")}</span>
+                      {prop.occupancy === "vacant" && <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">Available</span>}
+                    </div>
+                  </div>
+                  <div className="p-5">
+                    <h2 className="font-semibold text-white group-hover:text-[#C5A059] transition-colors line-clamp-1">{prop.title}</h2>
+                    <p className="text-sm text-slate-400 mt-1">{prop.city}{prop.state ? `, ${prop.state}` : ""}</p>
+                    <div className="flex items-center gap-2 mt-3 text-xs text-slate-500">
+                      <span>{prop.area.toLocaleString()} {prop.areaUnit}</span>
+                      {prop.bedrooms && <span>· {prop.bedrooms} BHK</span>}
+                    </div>
+                    <div className="mt-4 pt-4 border-t border-white/5">
+                      <span className="text-xs text-[#C5A059] font-semibold">Rent on Request →</span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </main>
+  );
+}

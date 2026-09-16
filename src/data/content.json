@@ -1,0 +1,78 @@
+{
+  "announcement": {
+    "enabled": true,
+    "badge": "NEW 2025",
+    "text": "Special 2025 NRI Tax & Legal Advisory Desk now open for US, UK & UAE clients.",
+    "linkText": "Schedule a Consultation",
+    "linkUrl": "/contact"
+  },
+  "hero": {
+    "tag": "PREMIUM NRI REAL ESTATE PLATFORM",
+    "title": "Your Real Estate in India, Managed with Trust & Precision",
+    "subtitle": "End-to-end property management, leasing, title verification, and asset monetization tailored specifically for Non-Resident Indians.",
+    "primaryCta": "Explore Managed Properties",
+    "secondaryCta": "List Your Property"
+  },
+  "stats": [
+    {
+      "label": "Assets Under Management",
+      "value": "₹650+ Cr"
+    },
+    {
+      "label": "Global NRI Families",
+      "value": "1,400+"
+    },
+    {
+      "label": "On-Time Rental Payouts",
+      "value": "99.8%"
+    },
+    {
+      "label": "Prime Tech Corridors",
+      "value": "HITEC & Jubilee"
+    }
+  ],
+  "contact": {
+    "phone": "+91 98765 43210",
+    "whatsapp": "+91 98765 43210",
+    "email": "support@lalanri.com",
+    "address": "Road No. 36, Jubilee Hills, Hyderabad, Telangana 500033",
+    "usLiaison": "+1 (408) 555-0199 (San Jose, CA)",
+    "uaeLiaison": "+971 50 123 4567 (Downtown Dubai)"
+  },
+  "faqs": [
+    {
+      "id": "faq-1",
+      "question": "Can I repatriate rental income and sales proceeds abroad?",
+      "answer": "Yes. Under RBI guidelines and FEMA regulations, rental income can be credited to an NRO account and repatriated up to USD 1 Million per financial year using Form 15CA & 15CB with CA certification.",
+      "category": "Tax & Legal"
+    },
+    {
+      "id": "faq-2",
+      "question": "How do you handle physical inspections if I live overseas?",
+      "answer": "Our dedicated field team conducts 45-point bi-monthly physical audits, checks plumbing/electrical fixtures, and uploads high-resolution 360° photo reports directly to your Owner Dashboard.",
+      "category": "Management"
+    },
+    {
+      "id": "faq-3",
+      "question": "Do I need to visit India to execute lease agreements?",
+      "answer": "No. We facilitate digital biometric e-stamping and Power of Attorney (PoA) execution where permitted, enabling completely remote tenant onboarding.",
+      "category": "Tenancy"
+    }
+  ],
+  "testimonials": [
+    {
+      "id": "test-1",
+      "name": "Dr. Sandeep K.",
+      "location": "Bay Area, California",
+      "propertyType": "4BHK Sky Villa (Jubilee Hills)",
+      "quote": "Living 9,000 miles away, finding reliable property managers was always stressful until I partnered with Lala NRI. Every rent disbursal is on time and physical inspection reports are crystal clear."
+    },
+    {
+      "id": "test-2",
+      "name": "Sunita & Vikram Reddy",
+      "location": "London, UK",
+      "propertyType": "Grade-A Commercial Space",
+      "quote": "They vetted top-tier corporate tenants, resolved local municipality tax documentation, and gave us total peace of mind. Truly a white-glove NRI service."
+    }
+  ]
+}
